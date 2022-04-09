@@ -1,7 +1,7 @@
 use std::fs::canonicalize;
 use std::path::PathBuf;
 
-pub fn ensure_canonical_dir(path: &String) -> PathBuf {
+pub fn ensure_canonical_directory(path: &String) -> PathBuf {
     let canonical_path = canonicalize(path)
         .unwrap_or_else(|error| panic!(
             "Could not canonicalize path '{}'! {:?}",

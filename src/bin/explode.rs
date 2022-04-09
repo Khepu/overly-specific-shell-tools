@@ -1,11 +1,12 @@
+use std::env::args;
+use std::fs::{read_dir, remove_dir, rename};
+
+use crate::util::cli::ensure_canonical_directory;
+
 mod util;
 
-use std::env::args;
-use std::fs::{canonicalize, read_dir, remove_dir, rename};
-use crate::util::cli::ensure_canonical_dir;
-
 fn explode(directory: String) {
-    let canonical_directory = ensure_canonical_dir(&directory);
+    let canonical_directory = ensure_canonical_directory(&directory);
 
     let parent = canonical_directory
         .parent()
