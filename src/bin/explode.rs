@@ -1,18 +1,11 @@
+mod util;
+
 use std::env::args;
 use std::fs::{canonicalize, read_dir, remove_dir, rename};
+use crate::util::cli::ensure_canonical_dir;
 
-pub fn explode(directory: String) {
-    let canonical_directory = canonicalize(&directory)
-        .unwrap_or_else(|error| panic!(
-            "Could not canonicalize path '{}'! {:?}",
-            directory,
-            error));
-
-    if !canonical_directory.is_dir() {
-        panic!(
-            "'{}' is not a directory!",
-            directory)
-    }
+fn explode(directory: String) {
+    let canonical_directory = ensure_canonical_dir(&directory);
 
     let parent = canonical_directory
         .parent()
