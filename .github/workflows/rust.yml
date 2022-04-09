@@ -27,4 +27,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose --package overly-specific-shell-tools --bin explode
+      run: cargo build --verbose
