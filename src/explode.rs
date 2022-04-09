@@ -1,4 +1,4 @@
-use std::fs::{canonicalize, metadata, read_dir, remove_dir, rename};
+use std::fs::{canonicalize, read_dir, remove_dir, rename};
 
 pub fn explode(directory: String) {
     let canonical_directory = canonicalize(&directory)
