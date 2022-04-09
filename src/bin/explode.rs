@@ -1,3 +1,4 @@
+use std::env::args;
 use std::fs::{canonicalize, read_dir, remove_dir, rename};
 
 pub fn explode(directory: String) {
@@ -42,3 +43,11 @@ pub fn explode(directory: String) {
             directory,
             error))
 }
+
+fn main() {
+    let directory = args()
+        .nth(1)
+        .expect("No path provided");
+    explode(directory)
+}
+
