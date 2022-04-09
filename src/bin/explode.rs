@@ -5,6 +5,8 @@ use crate::util::cli::ensure_canonical_directory;
 
 mod util;
 
+/// Moves everything that is inside the `directory` provided
+/// to its parent.
 fn explode(directory: String) {
     let canonical_directory = ensure_canonical_directory(&directory);
 
@@ -14,7 +16,7 @@ fn explode(directory: String) {
             "Could not find parent of '{}'!",
             directory));
 
-    read_dir(&directory)
+    read_dir(&canonical_directory)
         .unwrap_or_else(|error| panic!(
             "Could not list directory '{}'! {:?}",
             directory,
@@ -31,7 +33,7 @@ fn explode(directory: String) {
                 dir_entry.path().to_str().unwrap(),
                 error)));
 
-    remove_dir(&directory)
+    remove_dir(&canonical_directory)
         .unwrap_or_else(|error| panic!(
             "Could not delete '{}'! {:?}",
             directory,
@@ -41,7 +43,6 @@ fn explode(directory: String) {
 fn main() {
     let directory = args()
         .nth(1)
-        .expect("No path provided");
+        .expect("No path provided!");
     explode(directory)
 }
-
