@@ -1,18 +1,17 @@
-use std::env::args;
-use std::fs::{canonicalize, read_dir, remove_dir, rename};
+use std::fs::{read_dir, remove_dir, rename};
 
-pub fn explode(directory: String) {
-    let canonical_directory = canonicalize(&directory)
-        .unwrap_or_else(|error| panic!(
-            "Could not canonicalize path '{}'! {:?}",
-            directory,
-            error));
+use clap::Parser;
+use crate::config::explode_config::ExplodeConfig;
 
-    if !canonical_directory.is_dir() {
-        panic!(
-            "'{}' is not a directory!",
-            directory)
-    }
+use crate::util::cli::ensure_canonical_directory;
+
+mod util;
+mod config;
+
+/// Moves everything that is inside the `directory` provided
+/// to its parent.
+fn explode(directory: String) {
+    let canonical_directory = ensure_canonical_directory(&directory);
 
     let parent = canonical_directory
         .parent()
@@ -20,7 +19,7 @@ pub fn explode(directory: String) {
             "Could not find parent of '{}'!",
             directory));
 
-    read_dir(&directory)
+    read_dir(&canonical_directory)
         .unwrap_or_else(|error| panic!(
             "Could not list directory '{}'! {:?}",
             directory,
@@ -37,7 +36,7 @@ pub fn explode(directory: String) {
                 dir_entry.path().to_str().unwrap(),
                 error)));
 
-    remove_dir(&directory)
+    remove_dir(&canonical_directory)
         .unwrap_or_else(|error| panic!(
             "Could not delete '{}'! {:?}",
             directory,
@@ -45,9 +44,7 @@ pub fn explode(directory: String) {
 }
 
 fn main() {
-    let directory = args()
-        .nth(1)
-        .expect("No path provided");
-    explode(directory)
-}
+    let args: ExplodeConfig = ExplodeConfig::parse();
 
+    explode(args.directory)
+}
