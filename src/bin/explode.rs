@@ -1,9 +1,12 @@
-use std::env::args;
 use std::fs::{read_dir, remove_dir, rename};
+
+use clap::Parser;
+use crate::config::explode_config::ExplodeConfig;
 
 use crate::util::cli::ensure_canonical_directory;
 
 mod util;
+mod config;
 
 /// Moves everything that is inside the `directory` provided
 /// to its parent.
@@ -41,8 +44,7 @@ fn explode(directory: String) {
 }
 
 fn main() {
-    let directory = args()
-        .nth(1)
-        .expect("No path provided!");
-    explode(directory)
+    let args: ExplodeConfig = ExplodeConfig::parse();
+
+    explode(args.directory)
 }

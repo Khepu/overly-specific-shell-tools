@@ -1,9 +1,12 @@
-use std::env::args;
 use std::fs::{read_dir, remove_file};
 
+use clap::Parser;
+
+use crate::config::truncate_config::TruncateConfig;
 use crate::util::cli::ensure_canonical_directory;
 
 mod util;
+mod config;
 
 /// Deletes all files under the `directory` provided but preserves any directories.
 fn truncate(directory: String, depth: u16) {
@@ -36,17 +39,7 @@ fn truncate(directory: String, depth: u16) {
 }
 
 fn main() {
-    let directory = args()
-        .nth(1)
-        .expect("No path provided!");
+    let args: TruncateConfig = TruncateConfig::parse();
 
-    let depth = args()
-        .nth(2)
-        .map(|depth_str| depth_str.parse::<u16>()
-            .unwrap_or_else(|error| panic!(
-                "Could not parse argument 'depth'! {:?}",
-                error)))
-        .unwrap_or(0);
-
-    truncate(directory, depth)
+    truncate(args.directory, args.depth)
 }
