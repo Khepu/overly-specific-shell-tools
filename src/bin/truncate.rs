@@ -13,22 +13,25 @@ fn truncate(directory: String, depth: u16) {
     let canonical_directory = ensure_canonical_directory(&directory);
 
     read_dir(&canonical_directory)
-        .unwrap_or_else(|error| panic!(
-            "Could not list directory '{}'! {:?}",
-            directory,
-            error))
-        .map(|dir_entry_result| dir_entry_result
-            .unwrap_or_else(|error| panic!(
-                "Unknown error! {:?}",
+        .unwrap_or_else(|error|
+            panic!(
+                "Could not list directory '{}'! {:?}",
+                directory,
                 error))
-            .path())
+        .map(|dir_entry_result|
+            dir_entry_result
+                .unwrap_or_else(|error| panic!(
+                    "Unknown error! {:?}",
+                    error))
+                .path())
         .for_each(|path|
             if path.is_file() {
                 remove_file(&path)
-                    .unwrap_or_else(|error| panic!(
-                        "Could not delete file '{}'! {:?}",
-                        path.file_name().unwrap().to_str().unwrap(),
-                        error))
+                    .unwrap_or_else(|error|
+                        panic!(
+                            "Could not delete file '{}'! {:?}",
+                            path.file_name().unwrap().to_str().unwrap(),
+                            error))
             } else if depth > 0 {
                 let nested_directory = path.to_str()
                     .unwrap_or_else(|| panic!("Could not truncate nested directory!"))
