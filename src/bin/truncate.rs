@@ -30,7 +30,11 @@ fn truncate(directory: String, depth: u16) {
                     .unwrap_or_else(|error|
                         panic!(
                             "Could not delete file '{}'! {:?}",
-                            path.file_name().unwrap().to_str().unwrap(),
+                            path
+                                .file_name()
+                                .unwrap()
+                                .to_str()
+                                .unwrap(),
                             error))
             } else if depth > 0 {
                 let nested_directory = path.to_str()
