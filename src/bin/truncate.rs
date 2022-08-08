@@ -3,7 +3,7 @@ use std::fs::{read_dir, remove_file};
 use clap::Parser;
 
 use crate::config::truncate_config::TruncateConfig;
-use crate::util::cli::ensure_canonical_directory;
+use crate::util::file_system::ensure_canonical_directory;
 
 mod util;
 mod config;
@@ -35,7 +35,7 @@ fn truncate(directory: String, depth: u16) {
                     .to_string();
 
                 truncate(nested_directory, depth - 1);
-            });
+            })
 }
 
 fn main() {

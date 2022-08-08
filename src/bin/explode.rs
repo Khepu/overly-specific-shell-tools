@@ -3,7 +3,7 @@ use std::fs::{read_dir, remove_dir, rename};
 use clap::Parser;
 use crate::config::explode_config::ExplodeConfig;
 
-use crate::util::cli::ensure_canonical_directory;
+use crate::util::file_system::ensure_canonical_directory;
 
 mod util;
 mod config;
