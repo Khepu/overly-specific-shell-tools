@@ -41,7 +41,7 @@ fn truncate(directory: String, depth: u16) {
                     .unwrap_or_else(|| panic!("Could not truncate nested directory!"))
                     .to_string();
 
-                truncate(nested_directory, depth - 1);
+                truncate(nested_directory, depth - 1)
             })
 }
 
